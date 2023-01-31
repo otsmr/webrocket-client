@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>WebRocket Chat</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { greet } from "./pkg/webrocket_client.js";
+      init().then(() => {
+        greet("WebAssembly");
+      });
+    </script>
+  </body>
+</html>

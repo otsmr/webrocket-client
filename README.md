@@ -1,2 +1,4 @@
-# webrocket-client
-The client implementation for the WebRocket 🚀 server in Rust for wasm.
+# WebRocket-Client
+
+
+The client implementation for the [WebRocket 🚀 server](https://github.com/otsmr/webrocket) in Rust for wasm.
