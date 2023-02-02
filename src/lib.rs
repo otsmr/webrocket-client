@@ -1,35 +1,19 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
 mod utils;
-
-// use std::net::SocketAddr;
-
 use std::collections::HashMap;
-
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-}
-
-macro_rules! console_log {
-    ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
-}
-
-#[wasm_bindgen]
 pub struct WebRocket {
-    secure: bool,
-    host: String,
-    event_callbacks: HashMap<String, Vec<js_sys::Function>>,
+    url: String,
+    event_fkts: HashMap<String, Vec<js_sys::Function>>,
 }
 #[wasm_bindgen]
 impl WebRocket {
     #[wasm_bindgen(constructor)]
-    pub fn new(host: Option<String>) -> Self {
-        console_log!("HALLO: {:?}", host);
-        let host = if let Some(h) = host {
+    pub fn new(url: Option<String>) -> Self {
+        let url = if let Some(h) = url {
             h
         } else {
             let window = web_sys::window().expect("no global `window` exists");
@@ -37,27 +21,25 @@ impl WebRocket {
             let location = document
                 .location()
                 .expect("should habe a location on document");
-            location.host().expect("should have a host on location")
+            "ws://".to_owned() + &location.host().expect("should have a host on location")
         };
-        console_log!("Url = {:?}", host);
         Self {
-            secure: false,
-            host,
-            event_callbacks: HashMap::new(),
+            url,
+            event_fkts: HashMap::new(),
         }
     }
     pub fn on(&mut self, event: String, callback: &js_sys::Function) {
         console_log!("on_connect");
-        let entry = self.event_callbacks.entry(event).or_default();
+        let entry = self.event_fkts.entry(event).or_default();
         entry.push(callback.to_owned());
     }
 
     pub fn connect(&self) {
-        console_log!("Connectin to {} ({}).", self.host, self.secure);
+        console_log!("Connectin to {}.", self.url);
 
         // TODO: create WebSocket connection, see https://rustwasm.github.io/wasm-bindgen/examples/websockets.html
 
-        if let Some(callbacks) = self.event_callbacks.get("connect") {
+        if let Some(callbacks) = self.event_fkts.get("connect") {
             for callback in callbacks.iter() {
                 callback.call0(&JsValue::NULL).expect("Callback was wrong");
             }

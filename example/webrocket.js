@@ -7,19 +7,11 @@ function createConnection () {
   wr.on("connect", (socket) => {
     console.log("Connected!");
 
-    socket.on("message", (message, callback) => {
+    socket.on("hello", (message) => {
+      console.log(message);
+    });
 
-      console.log("New message:", message);
-
-      callback({
-        ok: "Hello Back"
-      });
-
-    })
-  });
-
-  wr.on("error", (error) => {
-    consoe.log("ERROR!", error);
+    socket.emit("howdy", "stranger");
   });
 
   wr.connect();
