@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>WebRocket</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { WebRocket } from "../pkg/webrocket_client.js";
+      init().then(() => {
+
+        const socket = new WebRocket("ws://127.0.0.1:3000");
+
+        // receive a message from the server
+        socket.on("hello", (msg) => {
+          console.log("hello", msg); // prints "world"
+        });
+
+        // send a message to the server
+        socket.emit("howdy", "stranger");
+
+      });
+    </script>
+  </body>
+</html>

@@ -20,5 +20,5 @@ extern "C" {
 
 #[macro_export]
 macro_rules! console_log {
-    ($($t:tt)*) => (utils::log(&format_args!($($t)*).to_string()))
+    ($($t:tt)*) => ($crate::utils::log(&format_args!($($t)*).to_string()))
 }

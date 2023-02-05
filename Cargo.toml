@@ -31,6 +31,8 @@ features = [
   'Document',
   'Location',
   'Window',
+  'WebSocket',
+  'MessageEvent'
 ]
 
 [dev-dependencies]
